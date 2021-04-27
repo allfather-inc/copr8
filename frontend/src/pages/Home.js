@@ -7,10 +7,10 @@ const selectTheme = theme => ({
   ...theme,
   colors: {
     ...theme.colors,
-    primary25: '#a7ffeb',
-    primary50: '#64ffda',
-    primary75: '#1de9b6',
-    primary: '#00bfa5'
+    primary25: '#b388ff',
+    primary50: '#7c4dff',
+    primary75: '#651fff',
+    primary: '#6200ea'
   }
 })
 
@@ -98,7 +98,7 @@ const UserForm = ({ setSelectedOptions }) => (
         type='submit'
         tw='inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none'
       >
-        Search for resource
+        Search
       </button>
       <button
         type='submit'

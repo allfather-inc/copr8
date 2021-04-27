@@ -38,7 +38,7 @@ const Header = () => {
           <ul tw='flex items-center hidden space-x-8 lg:flex'>
             <li>
               <a
-                href='/'
+                href='https://github.com/indian-innovation-company'
                 aria-label='About us'
                 title='About us'
                 tw='font-medium tracking-wide text-gray-100 transition-colors duration-200 hover:text-teal-accent-400'
@@ -130,7 +130,7 @@ const Header = () => {
                     <ul tw='space-y-4'>
                       <li>
                         <a
-                          href='/'
+                          href='https://github.com/indian-innovation-company'
                           aria-label='About us'
                           title='About us'
                           tw='font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400'
