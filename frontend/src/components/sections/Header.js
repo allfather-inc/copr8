@@ -3,7 +3,7 @@ import tw from 'twin.macro'
 
 import { useState } from 'react'
 
-export const Header = () => {
+const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (

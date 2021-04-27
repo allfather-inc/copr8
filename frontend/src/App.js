@@ -1,6 +1,6 @@
 import React from 'react'
 import tw from 'twin.macro'
-import Header from './components/sections/Header'
+import { Footer, Header } from './components/sections'
 import Home from './pages/Home'
 import Blog from './pages/List'
 
@@ -17,6 +17,7 @@ const App = () => (
     <Header />
     <Home />
     <Blog />
+    <Footer />
   </>
 )
 
