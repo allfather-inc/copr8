@@ -1,48 +1,99 @@
-import React from 'react'
+// @flow
+import React, { useState } from 'react'
 import tw, { styled, css, theme } from 'twin.macro'
+import Select from 'react-select'
 
-const UserForm = () => (
-  <form>
-    <div tw='mb-1 sm:mb-2'>
-      <label htmlFor='city' tw='inline-block mb-1 font-medium'>
-        City
-      </label>
-      <input
-        placeholder='Bangalore'
-        required
-        type='text'
-        tw='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline'
-        id='city'
-        name='city'
-      />
+const selectTheme = theme => ({
+  ...theme,
+  colors: {
+    ...theme.colors,
+    primary25: '#a7ffeb',
+    primary50: '#64ffda',
+    primary75: '#1de9b6',
+    primary: '#00bfa5'
+  }
+})
+
+const UserForm = ({ setSelectedOptions }) => (
+  <form tw='flex flex-col space-y-8'>
+    <div tw='flex flex-col space-y-4'>
+      <div tw=''>
+        <label htmlFor='city' tw='inline-block mb-1 font-medium'>
+          City
+        </label>
+        <Select
+          isMulti={false}
+          options={[
+            {
+              value: 'Bengaluru',
+              label: 'Bengaluru'
+            },
+            {
+              value: 'Mumbai',
+              label: 'Mumbai'
+            },
+            {
+              value: 'Delhi',
+              label: 'Delhi'
+            }
+          ]}
+          onChange={event => setSelectedOptions('city', event)}
+          theme={selectTheme}
+          tw='flex-grow w-full transition duration-200 rounded shadow-sm appearance-none focus:outline-none focus:shadow-outline'
+        />
+      </div>
+      <div tw=''>
+        <label htmlFor='locality' tw='inline-block mb-1 font-medium'>
+          Locality
+        </label>
+        <Select
+          isMulti
+          options={[
+            {
+              value: 'HSR Layout',
+              label: 'HSR Layout'
+            },
+            {
+              value: 'Indiranagar',
+              label: 'Indiranagar'
+            },
+            {
+              value: 'Kormanagala',
+              label: 'Kormanagala'
+            }
+          ]}
+          onChange={event => setSelectedOptions('locality', event)}
+          theme={selectTheme}
+          tw='flex-grow w-full transition duration-200 rounded shadow-sm appearance-none focus:outline-none focus:shadow-outline'
+        />
+      </div>
+      <div tw=''>
+        <label htmlFor='email' tw='inline-block mb-1 font-medium'>
+          Resource type
+        </label>
+        <Select
+          isMulti
+          options={[
+            {
+              value: 'Beds',
+              label: 'Beds'
+            },
+            {
+              value: 'Oxygen',
+              label: 'Oxygen'
+            },
+            {
+              value: 'Remdesivir',
+              label: 'Remdesivir'
+            }
+          ]}
+          onChange={event => setSelectedOptions('resource', event)}
+          theme={selectTheme}
+          tw='flex-grow w-full transition duration-200 rounded shadow-sm appearance-none focus:outline-none focus:shadow-outline'
+        />
+      </div>
     </div>
-    <div tw='mb-1 sm:mb-2'>
-      <label htmlFor='locality' tw='inline-block mb-1 font-medium'>
-        Locality
-      </label>
-      <input
-        placeholder='HSR Layout'
-        required
-        type='text'
-        tw='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline'
-        id='locality'
-        name='locality'
-      />
-    </div>
-    <div tw='mb-1 sm:mb-2'>
-      <label htmlFor='email' tw='inline-block mb-1 font-medium'>
-        Resource type
-      </label>
-      <input
-        placeholder='john.doe@example.org'
-        required
-        type='text'
-        tw='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline'
-        id='resource'
-        name='resource'
-      />
-    </div>
-    <div tw='mt-4 mb-2 sm:mb-4 space-y-2'>
+    <div tw='flex flex-col mb-2 sm:mb-4 space-y-4'>
       <button
         type='submit'
         tw='inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none'
@@ -51,7 +102,7 @@ const UserForm = () => (
       </button>
       <button
         type='submit'
-        tw='inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none'
+        tw='inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-black transition duration-200 rounded shadow-md bg-white border border-gray-700 hover:border-deep-purple-accent-700 focus:shadow-outline focus:outline-none'
       >
         Add a resource
       </button>
@@ -59,18 +110,27 @@ const UserForm = () => (
   </form>
 )
 
-const UserCard = () => (
+const UserCard = ({ selectedOptions, setSelectedOptions }) => (
   <div tw='w-full max-w-xl xl:px-8 xl:w-5/12'>
     <div tw='bg-white rounded shadow-2xl p-7 sm:p-10'>
       <h3 tw='mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl'>
         Help someone today
       </h3>
-      <UserForm />
+      <UserForm
+        selectedOptions={selectedOptions}
+        setSelectedOptions={setSelectedOptions}
+      />
     </div>
   </div>
 )
 
 export const Home = () => {
+  const [selectedOptions, setSelectedOptions] = useState({})
+
+  const onChange = (key, option) =>
+    setSelectedOptions({ ...selectedOptions, [key]: option.value })
+
+  console.log(selectedOptions)
   return (
     <div tw='relative'>
       <img
@@ -107,7 +167,10 @@ export const Home = () => {
                 </svg>
               </a>
             </div>
-            <UserCard />
+            <UserCard
+              selectedOptions={selectedOptions}
+              setSelectedOptions={onChange}
+            />
           </div>
         </div>
       </div>
