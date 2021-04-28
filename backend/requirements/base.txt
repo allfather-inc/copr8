@@ -7,5 +7,7 @@ whitenoise==5.2.0
 django-environ==0.4.5  # https://github.com/joke2k/django-environ
 django-phonenumber-field==5.1.0
 djangorestframework-camel-case2==0.3.0
+django-filter==2.4.0
 
 phonenumbers==8.12.21
+six==1.15.0
