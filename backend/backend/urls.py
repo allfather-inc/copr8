@@ -12,6 +12,6 @@ router.register(r'resources', ResourcesViewSet)
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("char_count", char_count, name="char_count"),
-    path('', include(router.urls)),
+    path('api/v1/', include(router.urls)),
     re_path(".*", TemplateView.as_view(template_name="index.html")),
 ]
