@@ -6,7 +6,6 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = False
 ALLOWED_HOSTS = ['0.0.0.0', os.environ.get("PRODUCTION_HOST")]
 
-
 # White Noise configuration - http://whitenoise.evans.io/en/stable/django.html
 INSTALLED_APPS.extend(["whitenoise.runserver_nostatic"])
 
@@ -21,3 +20,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATIC_URL = "/static/"
 WHITENOISE_ROOT = os.path.join(BASE_DIR, "../", "frontend", "build", "root")
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
