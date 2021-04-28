@@ -1,3 +1,9 @@
 from rest_framework import serializers
+from contrib.models import Resource
 
-# Create your serializers here.
+
+class ResourceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Resource
+        fields = '__all__'
