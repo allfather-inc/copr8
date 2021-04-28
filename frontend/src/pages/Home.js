@@ -1,39 +1,99 @@
 // @flow
 import React, { useState } from 'react'
-import tw, { styled, css, theme } from 'twin.macro'
-import { Hero, AddResourcesHero } from '../components/sections'
+
+import { useLocation } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+
+import Blog from './List'
+import { Header, Landing, Footer } from '../components/sections'
+
+const scrollToList = () => {
+  const section = document.querySelector('#resourceList')
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+const addQuery = ({ key, value, location, history }) => {
+  let pathname = location.pathname
+  // returns path: '/app/books'
+  let searchParams = new URLSearchParams(location.search)
+  // returns the existing query string: '?type=fiction&author=fahid'
+  searchParams.set(key, value)
+  history.push({
+    pathname: pathname,
+    search: searchParams.toString()
+  })
+}
+
+const searchResources = ({ selectedOptions, setIsLoading, setResources }) => {
+  fetch(
+    `/api/v1/resources/?city=${selectedOptions.city}&locality=${selectedOptions.locality}&resourceType=${selectedOptions.resource}`
+  )
+    .then(response => {
+      setIsLoading(false)
+      return response.json()
+    })
+    .then(data => {
+      setResources(data)
+      setIsLoading(false)
+      scrollToList()
+    })
+
+  setIsLoading(true)
+}
+
+const onChange = ({
+  key,
+  event,
+  selectedOptions,
+  setSelectedOptions,
+  location,
+  history
+}) => {
+  const values =
+    event instanceof Array ? event.map(option => option.value) : [event.value]
+  const value = values.join(',')
+
+  addQuery({ key, value, location, history })
+  setSelectedOptions({ ...selectedOptions, [key]: value })
+}
 
 const Home = () => {
   const [selectedOptions, setSelectedOptions] = useState({})
-  const [isAddSectionEnabled, setIsAddSectionEnabled] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const onChange = (key, option) =>
-    setSelectedOptions({ ...selectedOptions, [key]: option.value })
+  const [resources, setResources] = useState([])
+
+  const location = useLocation()
+  const history = useHistory()
 
   return (
-    <div tw='relative'>
-      <img
-        src='https://images.pexels.com/photos/3747463/pexels-photo-3747463.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260'
-        tw='absolute inset-0 object-cover w-full h-full'
-        alt=''
+    <>
+      <Header />
+      <Landing
+        isLoading={isLoading}
+        selectedOptions={selectedOptions}
+        setSelectedOptions={(key, event) =>
+          onChange({
+            key,
+            event,
+            selectedOptions,
+            setSelectedOptions,
+            location,
+            history
+          })
+        }
+        onSearch={() =>
+          searchResources({
+            selectedOptions,
+            setIsLoading,
+            setResources
+          })
+        }
       />
-      <div tw='relative bg-gray-900 bg-opacity-75'>
-        <div tw='px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20'>
-          {!isAddSectionEnabled ? (
-            <Hero
-              selectedOptions={selectedOptions}
-              setSelectedOptions={onChange}
-              onAdd={setIsAddSectionEnabled}
-            />
-          ) : (
-            <AddResourcesHero
-              selectedOptions={selectedOptions}
-              setSelectedOptions={onChange}
-            />
-          )}
-        </div>
-      </div>
-    </div>
+      <Blog resources={resources} selectedOptions={selectedOptions} />
+
+      <Footer />
+    </>
   )
 }
 

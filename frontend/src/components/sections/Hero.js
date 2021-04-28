@@ -1,8 +1,16 @@
 import React, { useState } from 'react'
 import tw, { styled, css, theme } from 'twin.macro'
 import { UserForm } from '../forms'
+import PropagateLoader from 'react-spinners/PropagateLoader'
+import LoadingOverlay from 'react-loading-overlay'
 
-const Hero = ({ selectedOptions, setSelectedOptions, onAdd }) => {
+const Hero = ({
+  selectedOptions,
+  setSelectedOptions,
+  onAdd,
+  onSearch,
+  isLoading
+}) => {
   return (
     <div tw='flex flex-col items-center justify-between xl:flex-row'>
       <div tw='w-full max-w-xl mb-12 xl:mb-0 xl:pr-16 xl:w-7/12'>
@@ -35,24 +43,33 @@ const Hero = ({ selectedOptions, setSelectedOptions, onAdd }) => {
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
         onAdd={onAdd}
+        onSearch={onSearch}
+        isLoading={isLoading}
       />
     </div>
   )
 }
 
-const UserCard = ({ selectedOptions, setSelectedOptions, onAdd }) => (
-  <div tw='w-full max-w-xl xl:px-8 xl:w-5/12'>
-    <div tw='bg-white rounded shadow-2xl p-7 sm:p-10'>
-      <h3 tw='mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl'>
-        Help someone today
-      </h3>
-      <UserForm
-        selectedOptions={selectedOptions}
-        setSelectedOptions={setSelectedOptions}
-        onAdd={onAdd}
-      />
-    </div>
-  </div>
+const UserCard = ({
+  selectedOptions,
+  setSelectedOptions,
+  onAdd,
+  onSearch,
+  isLoading
+}) => (
+  <LoadingOverlay tw='w-full max-w-xl xl:w-5/12' active={isLoading} spinner={<PropagateLoader color='#1de9b6' />}>
+      <div tw='bg-white rounded shadow-2xl p-7 sm:p-10'>
+        <h3 tw='mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl'>
+          Help someone today
+        </h3>
+        <UserForm
+          selectedOptions={selectedOptions}
+          setSelectedOptions={setSelectedOptions}
+          onAdd={onAdd}
+          onSearch={onSearch}
+        />
+      </div>
+  </LoadingOverlay>
 )
 
 const AddResourcesCard = ({ selectedOptions, setSelectedOptions, onAdd }) => (
@@ -62,6 +79,7 @@ const AddResourcesCard = ({ selectedOptions, setSelectedOptions, onAdd }) => (
         Help someone today
       </h3>
       <UserForm
+        showSearch={false}
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
         onAdd={onAdd}

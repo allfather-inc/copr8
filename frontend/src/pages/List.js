@@ -41,41 +41,41 @@ const Upvotes = ({ count }) => (
         />
       </svg>
     </div>
-    <p tw='font-semibold ml-1'>{count}K</p>
+    <p tw='font-semibold ml-1'>{count}</p>
   </a>
 )
 
-const ResourceCard = () => {
+const ResourceCard = ({ resource }) => {
   return (
-    <div tw='px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-2xl md:px-24 lg:p-4'>
+    <div tw='px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-2xl md:px-12 lg:p-4'>
       <div tw='p-8 rounded shadow-xl sm:p-16'>
         <div tw='flex flex-col lg:flex-row'>
-          <div tw='mb-6 lg:mb-0 lg:w-1/2 lg:pr-5'>
+          <div tw='mb-6 lg:mb-0 lg:w-1/2 lg:pr-5 space-y-2'>
             <div tw='flex space-x-2'>
-              <Badge text='Bangalore' />
-              <Badge text='Twitter' />
+              <Badge text={resource.city} />
+              <Badge text={resource.source || 'Dashboard'} />
             </div>
             <div tw='lg:space-y-4 mb-2'>
               <h2 tw='font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none'>
                 Bed availability in
-                <span tw='inline-block text-deep-purple-accent-400'>
+                <span tw='ml-1 inline-block text-deep-purple-accent-400'>
                   HSR Layout
                 </span>
               </h2>
-              <p className='text-gray-600'>By John Doe on 27th April, 2021</p>
+              <p className='text-gray-600'>
+                By {resource.referrer} <br /> on{' '}
+                {new Date(resource.created).toLocaleDateString()}
+              </p>
             </div>
 
-            <Upvotes count='100' />
+            <Upvotes count={resource.upvotes} />
           </div>
           <div tw='lg:w-1/2'>
             <div>
               <label tw='inline-block mb-1 font-medium transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800'>
                 Description
               </label>
-              <p tw='mb-4 text-base text-gray-700'>
-                Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                accusantium doloremque rem aperiam, eaque ipsa quae.
-              </p>
+              <p tw='mb-4 text-base text-gray-700'>{resource.description}</p>
               <a
                 href='/'
                 aria-label=''
@@ -97,7 +97,7 @@ const ResourceCard = () => {
     </div>
   )
 }
-export const Blog = () => {
+export const Blog = ({ resources, selectedOptions }) => {
   return (
     <div tw='px-4 py-8 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-10'>
       <div tw='p-8'>
@@ -110,6 +110,7 @@ export const Blog = () => {
             required=''
             type='text'
             tw='flex-grow w-full h-12 px-4 mb-3 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none md:mr-2 md:mb-0 focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline'
+            defaultValue={selectedOptions.city}
           />
           <input
             placeholder='Locality'
@@ -132,10 +133,10 @@ export const Blog = () => {
         </form>
       </div>
 
-      <div tw='mb-10 border-t border-b divide-y'>
-        <ResourceCard />
-        <ResourceCard />
-        <ResourceCard />
+      <div id='resourceList' tw='mb-10 border-t border-b divide-y'>
+        {resources.map(resource => (
+          <ResourceCard key={resource.id} resource={resource} />
+        ))}
       </div>
       <div tw='text-center'>
         <a

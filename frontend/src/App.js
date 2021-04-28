@@ -1,24 +1,32 @@
-import React from 'react'
-import tw from 'twin.macro'
-import { Footer, Header } from './components/sections'
-import Home from './pages/Home'
-import Blog from './pages/List'
+import React, { lazy } from 'react'
 
-const styles = {
-  // Move long class sets out of jsx to keep it scannable
-  container: ({ hasBackground }) => [
-    tw`flex flex-col items-center justify-center h-screen`,
-    hasBackground && tw`bg-gradient-to-b from-gray-50 to-black`
-  ]
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from 'react-router-dom'
+
+import AccessibleNavigationAnnouncer from './components/common/AccessibleNavigationAnnouncer'
+
+const Home = lazy(() => import('./pages/Home'))
+
+function App () {
+  return (
+    <>
+      <Router>
+
+        <Switch>
+          {/* <Route path="/listings" component={Listings}/> */}
+          {/* Place new routes over this */}
+          <Route path='/home' component={Home} />
+
+          {/* If you have an index page, you can remothis Redirect */}
+          <Redirect exact from='/' to='/home' />
+        </Switch>
+      </Router>
+    </>
+  )
 }
-
-const App = () => (
-  <>
-    <Header />
-    <Home />
-    <Blog />
-    <Footer />
-  </>
-)
 
 export default App
