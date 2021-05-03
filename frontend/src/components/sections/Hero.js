@@ -3,6 +3,7 @@ import tw, { styled, css, theme } from 'twin.macro'
 import { UserForm } from '../forms'
 import PropagateLoader from 'react-spinners/PropagateLoader'
 import LoadingOverlay from 'react-loading-overlay'
+import ShowResources from './Resource/Resource'
 
 const Hero = ({
   selectedOptions,
@@ -58,17 +59,17 @@ const UserCard = ({
   isLoading
 }) => (
   <LoadingOverlay tw='w-full max-w-xl xl:w-5/12' active={isLoading} spinner={<PropagateLoader color='#1de9b6' />}>
-      <div tw='bg-white rounded shadow-2xl p-7 sm:p-10'>
-        <h3 tw='mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl'>
-          Help someone today
+    <div tw='bg-white rounded shadow-2xl p-7 sm:p-10'>
+      <h3 tw='mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl'>
+        Help someone today
         </h3>
-        <UserForm
-          selectedOptions={selectedOptions}
-          setSelectedOptions={setSelectedOptions}
-          onAdd={onAdd}
-          onSearch={onSearch}
-        />
-      </div>
+      <UserForm
+        selectedOptions={selectedOptions}
+        setSelectedOptions={setSelectedOptions}
+        onAdd={onAdd}
+        onSearch={onSearch}
+      />
+    </div>
   </LoadingOverlay>
 )
 
@@ -103,4 +104,21 @@ const AddResourcesHero = ({ selectedOptions, setSelectedOptions }) => {
   )
 }
 
-export { Hero, AddResourcesHero }
+
+const ShowResourcesCard = ({ selectedOptions, setSelectedOptions, isVerifiedResource = true }) => {
+  return (
+    <div tw='flex flex-col items-start justify-start'>
+      <div tw='w-full max-w-full mb-6 xl:mb-0 xl:pr-16 xl:w-9/12 mx-auto'>
+
+        <h2 tw='max-w-2xl mb-6 font-sans text-3xl font-bold tracking-tight text-white sm:text-4xl sm:leading-none text-left'>
+          <span tw='text-green-900'>COVID<span tw='text-red-accent-200'>-19</span><span tw='text-teal-accent-700'> Resources </span></span>
+        </h2>
+        {isVerifiedResource && <><br /><span tw='p-3 bg-green-500 border border-green-500 text-sm rounded-lg text-left text-white'>Verified resource</span>
+        <br /><br /></>}
+        <ShowResources />
+      </div>
+    </div>
+  )
+}
+
+export { Hero, AddResourcesHero, ShowResourcesCard }

@@ -10,6 +10,7 @@ import {
 import AccessibleNavigationAnnouncer from './components/common/AccessibleNavigationAnnouncer'
 
 const Home = lazy(() => import('./pages/Home'))
+const ResourcePage = lazy(() => import('./pages/ResourcePage'))
 
 function App () {
   return (
@@ -19,6 +20,7 @@ function App () {
         <Switch>
           {/* <Route path="/listings" component={Listings}/> */}
           {/* Place new routes over this */}
+          <Route path='/ResourcePage' component={ResourcePage} />
           <Route path='/home' component={Home} />
 
           {/* If you have an index page, you can remothis Redirect */}
